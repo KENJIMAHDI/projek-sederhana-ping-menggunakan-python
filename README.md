@@ -1,2 +1,36 @@
 # projek-sederhana-ping-menggunakan-python
-Melakukan ping ke satu atau beberapa host/IP (misalnya 8.8.8.8 atau google.com).  Menampilkan apakah host terhubung (reachable) atau tidak (unreachable).  Menyimpan hasil ping ke file log secara otomatis pada outputnya.  Dapat dijalankan berulang setiap beberapa detik.
+# Melakukan ping ke satu atau beberapa host/IP (misalnya 8.8.8.8 atau google.com).  Menampilkan apakah host terhubung (reachable) atau tidak (unreachable).  Menyimpan hasil ping ke file log secara otomatis pada outputnya.  Dapat dijalankan berulang setiap beberapa detik.
+
+import os
+import time
+from datetime import datetime
+
+# 🧠 Daftar host yang akan dicek
+hosts = ["8.8.8.8", "1.1.1.1", "google.com", "yahoo.com"]
+
+# 📁 Nama file log
+log_file = "ping_log.txt"
+
+def log_and_print(message):
+    """Menampilkan pesan di layar dan menyimpannya ke file log"""
+    print(message)
+    with open(log_file, "a") as f:
+        f.write(message + "\n")
+
+print("🌐 Program Ping Checker dengan Logging Otomatis by Kenji")
+print("Tekan Ctrl+C untuk berhenti.\n")
+
+try:
+    while True:
+        timestamp = datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
+        for host in hosts:
+            response = os.system(f"ping -c 1 -W 1 {host} > /dev/null 2>&1")
+            if response == 0:
+                log_and_print(f"{timestamp} {host}: ✅ UP")
+            else:
+                log_and_print(f"{timestamp} {host}: ❌ DOWN")
+        print("-" * 50)
+        time.sleep(5)
+
+except KeyboardInterrupt:
+    print("\n🚪 Program dihentikan oleh pengguna.")
